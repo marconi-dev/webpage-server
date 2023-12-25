@@ -45,12 +45,11 @@ INSTALLED_APPS = [
     'portifolio.apps.PortifolioConfig',
 
     # 3rd parties
-    'whitenoise',
+    'storages'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',               # 3rd partie
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -91,10 +90,7 @@ PG_DATABASE_CONFIG = {
     'HOST':     os.getenv('PG_HOST', default='localhost'),
     'PASSWORD': os.getenv('PG_PASSWORD', default='postgres'),
 }
-DATABASES = {
-    'default': PG_DATABASE_CONFIG
-}
-
+DATABASES = {'default': PG_DATABASE_CONFIG}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -130,11 +126,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+if DEBUG:
+    STATIC_URL  = 'static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL   = 'media/'
+    MEDIA_ROOT  = os.path.join(BASE_DIR, 'media')
+
+else:
+    STORAGES = {
+        'default':      {'BACKEND': 'storages.backends.s3.S3Storage'},
+        'staticfiles':  {'BACKEND': 'storages.backends.s3.S3Storage'}
+    }
+
+
+# AWS
+AWS_ACCESS_KEY_ID       = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_S3_ENDPOINT_URL     = os.getenv("AWS_S3_ENDPOINT_URL")
+AWS_SECRET_ACCESS_KEY   = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
 
 
 # Default primary key field type
