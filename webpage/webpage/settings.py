@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'portifolio.apps.PortifolioConfig',
 
     # 3rd parties
-    'storages'
+    'storages',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
