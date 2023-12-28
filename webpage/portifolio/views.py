@@ -1,37 +1,44 @@
+from django.db.models import Q
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from .models import Profile
-from .serializers import ProfileSerializer
+from rest_framework.decorators import api_view
+
+from .models import Profile, Project, Technology
+from .serializers import ProfileSerializer, ProjectSerializer
 
 
-class IndexAPIView(APIView):
-    http_method_names = ("get",)
+@api_view(['GET'])
+def profile_view(request):
+    profile = Profile.objects.prefetch_related('links').first()
+    serializer = ProfileSerializer(profile)
+    return Response(serializer.data, status=status.HTTP_200_OK)   
 
-    def get_profile_data(self):
-        profile = Profile.objects.prefetch_related('links').first()
-        profile_serializer = ProfileSerializer(profile)
-        return profile_serializer.data
 
-    # context = {
-    #     "profile": Profile.objects.prefetch_related("links").first(),
-    #     "projects": [{
-    #         "name":"BackLess",
-    #         "short_description": "Um removedor de backgrounds de imagens que utiliza tarefas assíncronas e arquitetura serverless. Projeto criado usando Django, Channels, Redis, Postgre, Google Cloud e AWS.",
-    #         "active": True,
-    #         "source": "https://github.com/marconi-dev"
-    #     },{
-    #         "name":"Flashcards API",
-    #         "short_description": "Uma API REST para estudos com repetição espaçada inspirada no anki web. Criada com Django e Postgre, implementa autenticação JWT.",
-    #         "status": "disable",
-    #         "has_detail": True,
-    #         "source": "https://github.com/marconi-dev"
-    #     }]
-    # }
-    
+class ProjectAPIView(APIView):
+    http_method_names = ('get',)
+    def get_projects(self):
+        projects = Project.objects.all()
+        query_params = self.request.query_params
+
+        project_type = query_params.get('project_type')
+        if project_type in ['backend', 'fun', 'cs']:
+            projects = projects.filter(project_type=project_type)
+        
+        technologies = query_params.getlist('technologies')
+        if technologies:
+            # TODO Provide a hashmap eg. {tech_name: UUID} to the client 
+            # then filter against UUIDs directly
+            query = Q()
+            for tech in technologies:
+                query |= Q(name__icontains=tech)
+            
+            techs = Technology.objects.filter(query).values_list('id')
+            projects = projects.filter(tecnologies__in=techs).distinct('id')
+        
+        return projects
+
     def get(self, request, *args, **kwargs):
-        profile_data = self.get_profile_data()
-        response_data = {
-            'profile': profile_data
-        }
-        return Response(response_data, status=status.HTTP_200_OK)
+        projects = self.get_projects()
+        serializer = ProjectSerializer(projects, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

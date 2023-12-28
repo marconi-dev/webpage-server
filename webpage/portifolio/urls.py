@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import IndexAPIView
+from .views import ProjectAPIView, profile_view
 
 urlpatterns = [
-    path('', IndexAPIView.as_view(), name='index')
+    path('', profile_view, name='profile'),
+    path('projects/', ProjectAPIView.as_view(), name='projects')
 ]
