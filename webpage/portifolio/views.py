@@ -27,8 +27,8 @@ class ProjectAPIView(APIView):
         
         technologies = query_params.getlist('technologies')
         if technologies:
-            # TODO Provide a hashmap eg. {tech_name: UUID} to the client 
-            # then filter against UUIDs directly
+            # WARNING slow query. Avoid server side filtering
+            # against technologies
             query = Q()
             for tech in technologies:
                 query |= Q(name__icontains=tech)
