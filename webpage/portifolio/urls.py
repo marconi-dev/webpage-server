@@ -1,7 +1,15 @@
 from django.urls import path
-from .views import ProjectAPIView, profile_view
+from .views import (
+    tech_api_view,
+    ProjectAPIView,
+    project_api_view, 
+    profile_api_view,
+)
+
 
 urlpatterns = [
-    path('', profile_view, name='profile'),
-    path('projects/', ProjectAPIView.as_view(), name='projects')
+    path('', profile_api_view, name='profile'),
+    path('techs/', tech_api_view, name='techs'),
+    path('projects/', ProjectAPIView.as_view(), name='projects'),
+    path('projects/<uuid:pk>', project_api_view, name='project-detail'),
 ]

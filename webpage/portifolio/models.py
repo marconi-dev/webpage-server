@@ -1,7 +1,7 @@
 from uuid import uuid4
 from django.db import models
 
-# Create your models here.
+
 class Model(models.Model):
     id = models.UUIDField(default=uuid4, primary_key=True, editable=False)
 
@@ -54,8 +54,11 @@ class Project(Model):
     last_commit = models.DateField()
     tecnologies = models.ManyToManyField(
         Technology, 
-        through='portifolio.ProjectTechnology'
+        through='portifolio.ProjectTechnology',
     )
+
+    def __str__(self):
+        return self.name
 
 
 class ProjectDetailMixin(Model):
@@ -71,6 +74,10 @@ class ProjectDetailMixin(Model):
 class ProjectTechnology(ProjectDetailMixin):
     technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
 
+    class Meta:
+        default_related_name = "techs"
+
+
     def __str__(self):
         return f"{self.project.name} - {self.technology.name}"
 
@@ -79,6 +86,20 @@ class ProjectAsset(ProjectDetailMixin):
     title = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField()
 
+    class Meta:
+        default_related_name = "assets"
+
+
+    def __str__(self):
+        return f"{self.project.name} - {self.title}: {self.image.name}"
+
 
 class ProjectDetail(ProjectDetailMixin):
     title = models.CharField(max_length=255)
+
+    class Meta:
+        default_related_name = "details"
+
+
+    def __str__(self):
+        return f"{self.project.name} - {self.title}"
