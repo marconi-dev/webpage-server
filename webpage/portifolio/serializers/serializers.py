@@ -17,18 +17,26 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ('image', 'name', 'titles', 'links')
 
 
+class BaseTechnologySerializer(serializers.ModelSerializer):
+    class Meta:
+        model  = proj_models.Technology
+        fields = ('name', 'id')
+
+
+class TechnologySerializer(serializers.ModelSerializer):
+    tech_count = serializers.IntegerField()
+
+    class Meta:
+        model = proj_models.Technology
+        fields = ('name', 'id', 'tech_count')
+
+
 class ProjectSerializer(serializers.ModelSerializer):
-    tecnologies = serializers.StringRelatedField(many=True)
+    tecnologies = BaseTechnologySerializer(many=True)
 
     class Meta:
         model  = proj_models.Project
         fields = '__all__'
-
-
-class TechnologySerializer(serializers.ModelSerializer):
-    class Meta:
-        model  = proj_models.Technology
-        fields = ('name', 'id')
 
 
 class ProjectDetailSerializer(serializers.ModelSerializer):
