@@ -3,7 +3,11 @@ from django.db import models
 
 
 class Model(models.Model):
-    id = models.UUIDField(default=uuid4, primary_key=True, editable=False)
+    id = models.UUIDField(
+        default=uuid4, 
+        primary_key=True, 
+        editable=False
+    )
 
     class Meta:
         abstract = True
@@ -40,18 +44,18 @@ class Technology(Model):
 
 PROJECT_TYPE_CHOICES = (
     ('fun', 'For Fun'),
-    ('cs', 'Computer Science'),
     ('backend', 'Back-End'),
+    ('cs', 'Computer Science'),
 )
 class Project(Model):
-    name = models.CharField(max_length=32)
-    short_description = models.CharField(max_length=150)
-    project_type = models.CharField(choices=PROJECT_TYPE_CHOICES)
-    is_active = models.BooleanField(default=True)
-    source_code = models.URLField(blank=True, null=True)
-    deploy = models.URLField(blank=True, null=True)
     first_commit = models.DateField()
     last_commit = models.DateField()
+    name = models.CharField(max_length=32)
+    short_description = models.TextField()
+    is_active = models.BooleanField(default=True)
+    deploy = models.URLField(blank=True, null=True)
+    source_code = models.URLField(blank=True, null=True)
+    project_type = models.CharField(choices=PROJECT_TYPE_CHOICES)
     tecnologies = models.ManyToManyField(
         Technology, 
         through='portifolio.ProjectTechnology',
@@ -62,33 +66,47 @@ class Project(Model):
 
 
 class ProjectDetailMixin(Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    position = models.SmallIntegerField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
+    position = models.SmallIntegerField(blank=True, null=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
         ordering = ('position',)
 
 
+USED_BY_CHOICES = (
+    ('front', 'FrontEnd'),
+    ('mobile', 'Mobile'),
+    ('qa', 'QA'),
+)
 class ProjectTechnology(ProjectDetailMixin):
+    """
+    is_equipe_tech: technology was used by me or another team member
+    """
+    is_equipe_tech = models.BooleanField(default=False)
     technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
+    used_by = models.CharField(
+        choices=USED_BY_CHOICES, 
+        blank=True, 
+        null=True
+    )
 
     class Meta:
         default_related_name = "techs"
-
 
     def __str__(self):
         return f"{self.project.name} - {self.technology.name}"
 
 
 class ProjectAsset(ProjectDetailMixin):
+    image = models.ImageField(blank=True, null=True)
+    alter_text = models.TextField(blank=True, null=True)
+    mobile_image = models.ImageField(blank=True, null=True)
     title = models.CharField(max_length=255, blank=True, null=True)
-    image = models.ImageField()
 
     class Meta:
         default_related_name = "assets"
-
 
     def __str__(self):
         return f"{self.project.name} - {self.title}: {self.image.name}"
@@ -99,7 +117,6 @@ class ProjectDetail(ProjectDetailMixin):
 
     class Meta:
         default_related_name = "details"
-
 
     def __str__(self):
         return f"{self.project.name} - {self.title}"
