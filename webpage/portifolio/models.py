@@ -46,6 +46,8 @@ PROJECT_TYPE_CHOICES = (
     ('fun', 'For Fun'),
     ('backend', 'Back-End'),
     ('cs', 'Computer Science'),
+    ('frontend', 'Front-End'),
+    ('midend', 'Mid-End')
 )
 class Project(Model):
     first_commit = models.DateField()
@@ -120,3 +122,23 @@ class ProjectDetail(ProjectDetailMixin):
 
     def __str__(self):
         return f"{self.project.name} - {self.title}"
+
+
+ARTICLE_TYPE_CHOICES = PROJECT_TYPE_CHOICES + (
+    ('career', 'Carreira'),
+    ('community', 'Comunidade')
+)
+class Article(Model):
+    url = models.URLField()
+    description = models.TextField()
+    title = models.CharField(max_length=255)
+    technologies = models.ManyToManyField(Technology)
+    created_at = models.DateTimeField(auto_now_add=True)
+    article_type = models.CharField(choices=PROJECT_TYPE_CHOICES)
+
+    class Meta:
+        default_related_name = 'articles'
+        ordering = ('created_at',)
+
+    def __str__(self):
+        return self.title

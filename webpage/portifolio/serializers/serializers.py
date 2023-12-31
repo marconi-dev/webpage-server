@@ -47,3 +47,9 @@ class ProjectDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model   = proj_models.Project
         exclude = ('tecnologies',)
+
+
+class LatestArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = proj_models.Article
+        fields = ('title', 'created_at', 'description', 'url')
