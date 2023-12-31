@@ -1,4 +1,4 @@
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
@@ -27,10 +27,11 @@ def profile_api_view(request):
 
 @api_view(['GET'])
 def tech_api_view(request):
+    """Techs used by me in at least one project"""
     techs = (
         Technology.objects
         .annotate(tech_count=Count('techs'))
-        .filter(tech_count__gt=0)
+        .filter(tech_count__gt=0, techs__is_equipe_tech=False)
         .order_by('tech_count', 'name')
         .values('name', 'id', 'tech_count')
     )
