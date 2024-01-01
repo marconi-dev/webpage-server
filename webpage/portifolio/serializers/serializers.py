@@ -3,20 +3,6 @@ from . import detail
 from . import models as proj_models
 
 
-class LinksSerializer(serializers.ModelSerializer):
-    class Meta:
-        model  = proj_models.ProfileLink
-        fields = ('url', 'name')
-
-
-class ProfileSerializer(serializers.ModelSerializer):
-    links = LinksSerializer(many=True)
-
-    class Meta:
-        model  = proj_models.Profile
-        fields = ('image', 'name', 'titles', 'links')
-
-
 class BaseTechnologySerializer(serializers.ModelSerializer):
     class Meta:
         model  = proj_models.Technology

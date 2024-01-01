@@ -24,6 +24,7 @@ INSTALLED_APPS = [
 
     # apps
     'portifolio.apps.PortifolioConfig',
+    'my_profile.apps.MyProfileConfig',
 
     # 3rd parties
     'storages',

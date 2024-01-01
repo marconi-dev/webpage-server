@@ -13,28 +13,6 @@ class Model(models.Model):
         abstract = True
 
 
-class Profile(Model):
-    image = models.ImageField()
-    name = models.CharField(max_length=255)
-    titles = models.CharField(max_length=255)
-
-    def __str__(self):
-        return f"Profile - {self.name}"
-
-
-class ProfileLink(Model): 
-    url = models.URLField()
-    name = models.CharField(max_length=32)
-    profile = models.ForeignKey(
-        Profile, 
-        on_delete=models.CASCADE,
-        related_name='links'
-    )
-
-    def __str__(self):
-        return f"{self.name} - URL"
-
-
 class Technology(Model):
     name = models.CharField(max_length=100)
 

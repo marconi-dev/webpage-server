@@ -6,13 +6,11 @@ from rest_framework.decorators import api_view
 
 from .models import (
     Study,
-    Profile, 
     Article,
     Project, 
     Technology, 
 )
 from .serializers.serializers import (
-    ProfileSerializer, 
     ProjectSerializer, 
     TechnologySerializer,
     LatestStudySerializer,
@@ -26,12 +24,6 @@ def project_list_api_view(request):
     projects = Project.objects.all()
     serializer = ProjectSerializer(projects, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
-
-@api_view(['GET'])
-def profile_api_view(request):
-    profile = Profile.objects.prefetch_related('links').first()
-    serializer = ProfileSerializer(profile)
-    return Response(serializer.data, status=status.HTTP_200_OK)   
 
 @api_view(['GET'])
 def tech_api_view(request):
