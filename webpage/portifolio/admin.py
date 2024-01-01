@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import (
+    Study,
     Article,
     Profile, 
     Project,
@@ -11,6 +12,7 @@ from .models import (
 )
 
 # Register your models here.
+admin.site.register(Study)
 admin.site.register(Profile)
 admin.site.register(Project)
 admin.site.register(Article)
