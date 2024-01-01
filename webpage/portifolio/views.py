@@ -40,7 +40,7 @@ def tech_api_view(request):
         Technology.objects
         .annotate(tech_count=Count('techs'))
         .filter(tech_count__gt=0, techs__is_equipe_tech=False)
-        .order_by('tech_count', 'name')
+        .order_by('-tech_count', 'name')
         .values('name', 'id', 'tech_count')
     )
     serializer = TechnologySerializer(techs, many=True)

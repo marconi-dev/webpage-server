@@ -52,8 +52,9 @@ PROJECT_TYPE_CHOICES = (
 class Project(Model):
     first_commit = models.DateField()
     last_commit = models.DateField()
-    name = models.CharField(max_length=32)
+    description = models.TextField()
     short_description = models.TextField()
+    name = models.CharField(max_length=32)
     is_active = models.BooleanField(default=True)
     deploy = models.URLField(blank=True, null=True)
     source_code = models.URLField(blank=True, null=True)
