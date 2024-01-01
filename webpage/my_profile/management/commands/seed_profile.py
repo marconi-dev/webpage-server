@@ -2,12 +2,12 @@ from django.db.utils import ProgrammingError
 from django.core.management.base import BaseCommand
 
 from . import _MSGs as msg
-from . import TECHNOLOGIES, PROFILE, LINKS
-from . import Profile, Technology, ProfileLink
+from . import PROFILE, LINKS
+from . import Profile, ProfileLink
 
  
 class Command(BaseCommand):
-    help = "Seed profile, links and technologies"
+    help = "Popular perfil e links de perfil"
 
     def create_profile(self):
         try:
@@ -47,25 +47,6 @@ class Command(BaseCommand):
         
         ProfileLink.objects.bulk_create(links)
 
-    def create_technologies(self):
-        techs = []
-        for tech_name in TECHNOLOGIES:
-            try:
-                tech = Technology.objects.get(name=tech_name)
-                self.stdout.write(msg.TECH_EXISTS.format(tech,))
-
-            except Technology.DoesNotExist:
-                tech = Technology(name=tech_name)
-                techs.append(tech)
-                self.stdout.write(msg.TECH_CREATION.format(tech,))
-
-            except ProgrammingError:
-                self.stdout.write(msg.PROGRAMMING_ERROR)
-                exit()
-        
-        Technology.objects.bulk_create(techs)
-
     def handle(self, *args, **options):
         self.create_profile()
-        self.create_technologies()
         self.create_profile_links()

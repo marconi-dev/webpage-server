@@ -23,8 +23,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # apps
-    'portifolio.apps.PortifolioConfig',
+    'projects.apps.ProjectsConfig',
     'my_profile.apps.MyProfileConfig',
+    'portifolio.apps.PortifolioConfig',
 
     # 3rd parties
     'storages',

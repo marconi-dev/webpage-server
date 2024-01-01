@@ -1,12 +1,14 @@
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
-from django.conf import settings
 from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('projects.routes')),
     path('', include('portifolio.urls')),
-    path('', include('my_profile.routes'))
+    path('', include('my_profile.routes')),
 ]
 
 if settings.DEBUG:
