@@ -4,7 +4,7 @@ WORKDIR /app
 COPY requirements.txt /app
 COPY . /app
 
-RUN pip install -r requirements.txt
+RUN pip install --root-user-action=ignore -r requirements.txt
 
 EXPOSE 8000
 
