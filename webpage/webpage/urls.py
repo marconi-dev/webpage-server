@@ -6,10 +6,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('studies.routes')),
-    path('', include('articles.routes')),
-    path('', include('projects.routes')),
-    path('', include('my_profile.routes')),
+    path('v1/', include('studies.urls')),
+    path('v1/', include('articles.urls')),
+    path('v1/', include('projects.urls')),
+    path('v1/', include('my_profile.urls')),
 ]
 
 if settings.DEBUG:
