@@ -1,15 +1,17 @@
-version: '3'
+version: '3.4'
+
+x-env-variables: &env-variables
+  PG_USER: postgres
+  PG_NAME: postgres
+  PG_PASSWORD: postgres
+  PG_PORT: 5432
+  PG_HOST: pg_db
+  DEBUG: "True"
 
 services:
   django: 
     build: .
-    environment:
-      PG_USER: postgres
-      PG_NAME: postgres
-      PG_PASSWORD: postgres
-      PG_PORT: 5432
-      PG_HOST: pg_db
-      DEBUG: "True"
+    environment: *env-variables
     command: python webpage/manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
@@ -21,14 +23,8 @@ services:
 
   migration:
     build: .
-    environment:
-      PG_USER: postgres
-      PG_NAME: postgres
-      PG_PASSWORD: postgres
-      PG_PORT: 5432
-      PG_HOST: pg_db
-      DEBUG: "True"
- 
+    environment: *env-variables
+
     command: python webpage/manage.py migrate
     depends_on:
       pg_db:
