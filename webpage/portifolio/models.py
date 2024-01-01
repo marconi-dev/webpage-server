@@ -1,26 +1,6 @@
 from django.db import models
-from projects.models import Model, PROJECT_TYPE_CHOICES
+from articles.models import Model, ARTICLE_TYPE_CHOICES
 
-
-ARTICLE_TYPE_CHOICES = PROJECT_TYPE_CHOICES + (
-    ('career', 'Carreira'),
-    ('community', 'Comunidade'),
-    ('sdev', 'Desenvolvimento de Software')
-)
-class Article(Model):
-    url = models.URLField()
-    description = models.TextField()
-    title = models.CharField(max_length=255)
-    technologies = models.ManyToManyField('projects.Technology')
-    created_at = models.DateTimeField(auto_now_add=True)
-    article_type = models.CharField(choices=PROJECT_TYPE_CHOICES)
-
-    class Meta:
-        default_related_name = 'articles'
-        ordering = ('created_at',)
-
-    def __str__(self):
-        return self.title
 
 
 STUDY_SUBJECT_CHOICES = ARTICLE_TYPE_CHOICES

@@ -24,6 +24,7 @@ INSTALLED_APPS = [
 
     # apps
     'projects.apps.ProjectsConfig',
+    'articles.apps.ArticlesConfig',
     'my_profile.apps.MyProfileConfig',
     'portifolio.apps.PortifolioConfig',
 
