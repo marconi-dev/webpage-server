@@ -1,8 +1,7 @@
 from django.db import models
 from articles.models import Model, ARTICLE_TYPE_CHOICES
 
-
-
+# Create your models here.
 STUDY_SUBJECT_CHOICES = ARTICLE_TYPE_CHOICES
 STUDY_TYPE_CHOICES = (
     ('vid', 'Video'),
@@ -14,17 +13,19 @@ STUDY_TYPE_CHOICES = (
 )
 class Study(Model):
     url = models.URLField()
-    thought = models.TextField()
+    thought = models.TextField(blank=True, null=True)
     description = models.TextField()
     title = models.CharField(max_length=255)
-    technologies = models.ManyToManyField('projects.Technology')
     created_at = models.DateTimeField(auto_now_add=True) 
     study_type = models.CharField(choices=STUDY_TYPE_CHOICES)
+    technologies = models.ManyToManyField('projects.Technology')
     study_subject = models.CharField(choices=STUDY_SUBJECT_CHOICES)
 
     class Meta:
         default_related_name = 'studies'
         ordering = ('created_at',)
+        verbose_name = "estudo"
+        verbose_name_plural = "estudos"
 
     def __str__(self):
         return self.title

@@ -23,10 +23,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # apps
+    'studies.apps.StudiesConfig',
     'projects.apps.ProjectsConfig',
     'articles.apps.ArticlesConfig',
     'my_profile.apps.MyProfileConfig',
-    'portifolio.apps.PortifolioConfig',
 
     # 3rd parties
     'storages',

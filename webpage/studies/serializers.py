@@ -1,8 +1,14 @@
 from rest_framework import serializers
-from . import models as proj_models
+from .models import Study
+
+
+class StudySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Study
+        fields = '__all__'
 
 
 class LatestStudySerializer(serializers.ModelSerializer):
     class Meta:
-        model = proj_models.Study
+        model = Study
         fields = ('title', 'created_at', 'description', 'url')

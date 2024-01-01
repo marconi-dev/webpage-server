@@ -6,9 +6,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('studies.routes')),
     path('', include('articles.routes')),
     path('', include('projects.routes')),
-    path('', include('portifolio.urls')),
     path('', include('my_profile.routes')),
 ]
 
