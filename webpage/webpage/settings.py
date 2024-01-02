@@ -67,15 +67,25 @@ WSGI_APPLICATION = 'webpage.wsgi.application'
 
 
 # Database
-PG_DATABASE_CONFIG = {
-    'ENGINE':   'django.db.backends.postgresql',
-    'PORT':     os.getenv('PG_PORT', default=5432),
-    'USER':     os.getenv('PG_USER', default='postgres'),
-    'NAME':     os.getenv('PG_NAME', default='postgres'),
-    'HOST':     os.getenv('PG_HOST', default='localhost'),
-    'PASSWORD': os.getenv('PG_PASSWORD', default='postgres'),
+DB_USE_SSL = os.getenv("DB_USE_SSL", default="True") == 'True'
+MY_SQL_DATABASE_CONFIG = {
+    # Defaults to a local mysql instance with a django_db database 
+    # created. Login as root and use ssl certificate.
+    'ENGINE': 'django.db.backends.mysql',
+    'USER': os.getenv('DB_USER', default='root'),
+    'NAME': os.getenv('DB_NAME', default='django_db'),
+    'PASSWORD': os.getenv('DB_PASSWORD', default="pass"),
+    'PORT': os.getenv('DB_PORT', default=3306),
+    'HOST': os.getenv('DB_HOST', default='127.0.0.1'),
+    'OPTIONS': {'charset': 'utf8mb4'}
 }
-DATABASES = {'default': PG_DATABASE_CONFIG}
+
+if DB_USE_SSL:
+    MY_SQL_DATABASE_CONFIG['OPTIONS']['ssl'] = {
+        'ca': os.getenv('MYSQL_ATTR_SSL_CA')
+    }
+
+DATABASES = {'default': MY_SQL_DATABASE_CONFIG}
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

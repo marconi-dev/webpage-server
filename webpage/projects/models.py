@@ -40,7 +40,10 @@ class Project(Model):
     is_active = models.BooleanField(default=True)
     deploy = models.URLField(blank=True, null=True)
     source_code = models.URLField(blank=True, null=True)
-    project_type = models.CharField(choices=PROJECT_TYPE_CHOICES)
+    project_type = models.CharField(
+        choices=PROJECT_TYPE_CHOICES, 
+        max_length=32
+    )
     technologies = models.ManyToManyField(
         Technology, 
         through='projects.ProjectTechnology',
@@ -77,6 +80,7 @@ class ProjectTechnology(ProjectDetailMixin):
     technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
     used_by = models.CharField(
         choices=USED_BY_CHOICES, 
+        max_length=32,
         blank=True, 
         null=True
     )

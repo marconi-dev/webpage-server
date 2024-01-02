@@ -17,9 +17,15 @@ class Study(Model):
     description = models.TextField()
     title = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True) 
-    study_type = models.CharField(choices=STUDY_TYPE_CHOICES)
     technologies = models.ManyToManyField('projects.Technology')
-    study_subject = models.CharField(choices=STUDY_SUBJECT_CHOICES)
+    study_type = models.CharField(
+        choices=STUDY_TYPE_CHOICES, 
+        max_length=32
+    )
+    study_subject = models.CharField(
+        choices=STUDY_SUBJECT_CHOICES,
+        max_length=32
+    )
 
     class Meta:
         default_related_name = 'studies'

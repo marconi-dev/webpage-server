@@ -13,7 +13,10 @@ class Article(Model):
     title = models.CharField(max_length=255)
     technologies = models.ManyToManyField('projects.Technology')
     created_at = models.DateTimeField(auto_now_add=True)
-    article_type = models.CharField(choices=ARTICLE_TYPE_CHOICES)
+    article_type = models.CharField(
+        choices=ARTICLE_TYPE_CHOICES, 
+        max_length=32
+    )
 
     class Meta:
         default_related_name = 'articles'
