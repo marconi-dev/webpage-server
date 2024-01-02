@@ -12,6 +12,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', default='django-insecure')
 DEBUG = os.getenv('DEBUG', default='True') == 'True'
 
 ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', default='*')]
+CSRF_TRUSTED_ORIGINS = [os.getenv("CSRF_TRUSTED_ORIGINS", default="*")]
 
 
 INSTALLED_APPS = [

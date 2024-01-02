@@ -11,4 +11,4 @@ RUN pip install --root-user-action=ignore -r requirements.txt
 
 EXPOSE 8000
 
-CMD ["python", "webpage/manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "--chdir=./webpage", "webpage.wsgi:application", "--bind", "0.0.0.0:8000", "--workers=2"]
