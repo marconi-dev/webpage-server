@@ -3,6 +3,6 @@ from .views import StudyViewSet
 
 
 router = DefaultRouter()
-router.register('studies', StudyViewSet)
+router.register("studies", StudyViewSet, "studies")
 
 urlpatterns = router.urls
